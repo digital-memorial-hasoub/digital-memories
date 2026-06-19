@@ -7,10 +7,14 @@ import type { Victim } from '../types'
 interface Props { onClose: () => void }
 
 export default function OnThisDay({ onClose }: Props) {
-  const { t }    = useTranslation()
-  const navigate = useNavigate()
+  const { t, i18n } = useTranslation()
+  const navigate     = useNavigate()
   const [victims, setVictims] = useState<Victim[]>([])
-  const today = new Date().toLocaleDateString('ar-SA', { day: 'numeric', month: 'long' })
+
+  const today = new Date().toLocaleDateString(
+    i18n.language === 'he' ? 'he-IL' : i18n.language === 'en' ? 'en-GB' : 'ar-SA',
+    { day: 'numeric', month: 'long' }
+  )
 
   useEffect(() => {
     api.victims.onThisDay()
@@ -37,16 +41,10 @@ export default function OnThisDay({ onClose }: Props) {
         {/* Header — navy panel */}
         <div
           className="p-5 flex items-start justify-between"
-          style={{
-            background:   'var(--ink-800)',
-            borderBottom: '1px solid rgba(255,255,255,.08)',
-          }}
+          style={{ background: 'var(--ink-800)', borderBottom: '1px solid rgba(255,255,255,.08)' }}
         >
           <div>
-            <p
-              className="text-xs tracking-widest mb-1"
-              style={{ color: 'var(--olive-300)', letterSpacing: 'var(--tracking-wide)' }}
-            >
+            <p className="text-xs tracking-widest mb-1" style={{ color: 'var(--olive-300)', letterSpacing: 'var(--tracking-wide)' }}>
               {t('onThisDay.title')}
             </p>
             <h2 className="text-xl font-bold" style={{ color: 'var(--paper-50)' }}>
@@ -67,7 +65,7 @@ export default function OnThisDay({ onClose }: Props) {
         <div className="p-4 max-h-[55vh] overflow-y-auto space-y-3">
           {victims.length === 0 && (
             <p className="text-center py-4 text-sm" style={{ color: 'var(--text-muted)' }}>
-              جارٍ التحميل...
+              {t('common.loading')}
             </p>
           )}
           {victims.map((v) => (
@@ -79,13 +77,12 @@ export default function OnThisDay({ onClose }: Props) {
               onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--accent)')}
               onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}
             >
-              {/* Silhouette placeholder */}
               <div
-                className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center"
+                className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center overflow-hidden"
                 style={{ background: 'var(--wash-photo)' }}
               >
                 {v.photo_url ? (
-                  <img src={v.photo_url} alt={v.name_ar} className="w-full h-full object-cover rounded-full" />
+                  <img src={v.photo_url} alt={v.name_ar} className="w-full h-full object-cover" />
                 ) : (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
                     stroke="var(--blue-grey-500)" strokeWidth="1.5"
@@ -98,7 +95,7 @@ export default function OnThisDay({ onClose }: Props) {
               <div>
                 <p className="font-bold" style={{ color: 'var(--text-strong)' }}>{v.name_ar}</p>
                 <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-                  {v.age} سنة · {v.city} · {new Date(v.date_of_death).getFullYear()}
+                  {v.age} {t('common.ageUnit')} · {v.city} · {new Date(v.date_of_death).getFullYear()}
                 </p>
               </div>
             </div>

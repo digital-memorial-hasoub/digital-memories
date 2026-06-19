@@ -43,9 +43,9 @@ export default function Home() {
     : '…'
 
   const statItems: [string, string][] = [
-    [victimLabel, 'ضحية موثَّقة'],
-    [cityLabel,   'مدينة وبلدة'],
-    [yearLabel,   'سنوات التوثيق'],
+    [victimLabel, t('home.stats.victims')],
+    [cityLabel,   t('home.stats.cities')],
+    [yearLabel,   t('home.stats.years')],
   ]
 
   return (
@@ -57,19 +57,14 @@ export default function Home() {
         className="text-center py-20 px-6"
         style={{ background: 'var(--wash-olive)', borderBottom: '1px solid var(--border)' }}
       >
-        {/* Eyebrow */}
         <span
           className="inline-block text-xs mb-6 px-4 py-1.5 rounded-full"
-          style={{
-            color:   'var(--accent-text)',
-            border:  '1px solid var(--accent-line)',
-            letterSpacing: 'var(--tracking-wide)',
-          }}
+          style={{ color: 'var(--accent-text)', border: '1px solid var(--accent-line)', letterSpacing: 'var(--tracking-wide)' }}
         >
-          مشروع التخليد الرقمي
+          {t('home.eyebrow')}
         </span>
 
-        <h1 className="text-5xl font-black mb-3" dir="rtl" style={{ color: 'var(--ink-800)', lineHeight: 'var(--leading-tight)' }}>
+        <h1 className="text-5xl font-black mb-3" style={{ color: 'var(--ink-800)', lineHeight: 'var(--leading-tight)' }}>
           {t('hero.title')} —{' '}
           <span style={{ color: 'var(--accent-text)' }}>{t('hero.subtitle')}</span>
         </h1>
@@ -98,17 +93,13 @@ export default function Home() {
       {/* ── Recent ── */}
       <section className="max-w-6xl mx-auto px-6 py-12">
         <div className="flex items-baseline justify-between mb-6">
-          <h2 className="text-xl font-bold" style={{ color: 'var(--text-strong)' }}>آخر التوثيقات</h2>
+          <h2 className="text-xl font-bold" style={{ color: 'var(--text-strong)' }}>{t('home.recentTitle')}</h2>
           <button
             onClick={() => navigate('/victims')}
             className="text-sm px-3 py-1.5 rounded-lg transition-all"
-            style={{
-              color:   'var(--accent-text)',
-              border:  '1px solid var(--accent-line)',
-              background: 'transparent',
-            }}
+            style={{ color: 'var(--accent-text)', border: '1px solid var(--accent-line)', background: 'transparent' }}
           >
-            عرض الكل ←
+            {t('home.viewAll')}
           </button>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -123,31 +114,17 @@ export default function Home() {
           <button
             onClick={() => navigate('/map')}
             className="text-sm px-3 py-1.5 rounded-lg transition-all"
-            style={{
-              color:   'var(--accent-text)',
-              border:  '1px solid var(--accent-line)',
-              background: 'transparent',
-            }}
+            style={{ color: 'var(--accent-text)', border: '1px solid var(--accent-line)', background: 'transparent' }}
           >
-            فتح الخريطة ←
+            {t('home.openMap')}
           </button>
         </div>
         <div
           onClick={() => navigate('/map')}
           className="h-52 rounded-xl flex flex-col items-center justify-center gap-3 cursor-pointer transition-all"
-          style={{
-            background: 'var(--surface)',
-            border:     '1px solid var(--border)',
-            boxShadow:  'var(--shadow-sm)',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.borderColor = 'var(--accent)'
-            e.currentTarget.style.boxShadow   = 'var(--shadow-md)'
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.borderColor = 'var(--border)'
-            e.currentTarget.style.boxShadow   = 'var(--shadow-sm)'
-          }}
+          style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)' }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.boxShadow = 'var(--shadow-md)' }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'var(--shadow-sm)' }}
         >
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
             stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -155,7 +132,7 @@ export default function Home() {
             <line x1="9" y1="3" x2="9" y2="18" />
             <line x1="15" y1="6" x2="15" y2="21" />
           </svg>
-          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>خريطة حرارية تفاعلية — اضغط للفتح</p>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t('home.mapTeaser')}</p>
         </div>
       </section>
     </div>

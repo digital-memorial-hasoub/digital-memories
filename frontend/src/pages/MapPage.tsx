@@ -192,7 +192,7 @@ export default function MapPage() {
             boxShadow:  'var(--shadow-md)',
           }}
         >
-          <p className="font-bold mb-2" style={{ color: 'var(--text-strong)' }}>نوع الجريمة</p>
+          <p className="font-bold mb-2" style={{ color: 'var(--text-strong)' }}>{t('map.legendTitle')}</p>
           {Object.entries(TYPE_COLOR).map(([type, color]) => (
             <div key={type} className="flex items-center gap-2 mb-1" style={{ color: 'var(--text-muted)' }}>
               <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: color }} />
@@ -200,7 +200,7 @@ export default function MapPage() {
             </div>
           ))}
           <div className="mt-2 pt-2" style={{ borderTop: '1px solid var(--border)' }}>
-            <p className="font-bold mb-1" style={{ color: 'var(--text-strong)' }}>الكثافة</p>
+            <p className="font-bold mb-1" style={{ color: 'var(--text-strong)' }}>{t('map.heatTitle')}</p>
             <div
               className="h-2 rounded-full w-28"
               style={{ background: 'linear-gradient(90deg, rgba(107,128,56,.15), rgba(107,128,56,.85))' }}

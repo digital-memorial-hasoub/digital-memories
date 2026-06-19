@@ -41,10 +41,10 @@ export default function SearchPage() {
 
       {/* Heading */}
       <h1 className="text-2xl font-black mb-1" style={{ color: 'var(--text-strong)' }}>
-        قاعدة بيانات الضحايا
+        {t('search.title')}
       </h1>
       <p className="text-sm mb-8" style={{ color: 'var(--text-muted)' }}>
-        ابحث عن ضحية بالاسم، المدينة، السنة، أو نوع الجريمة.
+        {t('search.desc')}
       </p>
 
       {/* Filter bar */}
@@ -88,7 +88,7 @@ export default function SearchPage() {
 
       {/* Result count */}
       <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
-        {loading ? 'جارٍ البحث...' : (
+        {loading ? t('common.loading') : (
           <>
             <strong style={{ color: 'var(--accent-text)', fontWeight: 700 }}>{victims.length}</strong>
             {' '}{t('search.results')}

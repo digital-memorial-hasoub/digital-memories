@@ -18,7 +18,8 @@ const TYPE_BG: Record<string, string> = {
 }
 
 /* ─── Testimonial submission form ──────────────────────────────────────── */
-function TestimonialForm({ victimId }: { victimId: string }) {
+function TestimonialForm({ victimId, victimName }: { victimId: string; victimName: string }) {
+  const { t, i18n } = useTranslation()
   const [authorName, setAuthorName] = useState('')
   const [relation,   setRelation]   = useState('')
   const [content,    setContent]    = useState('')
@@ -43,7 +44,11 @@ function TestimonialForm({ victimId }: { victimId: string }) {
       const res = await fetch(`${BASE}/victims/${victimId}/testimonials`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ author_name: authorName.trim(), relation: relation.trim() || undefined, content_ar: content.trim() }),
+        body:    JSON.stringify({
+          author_name: authorName.trim(),
+          relation:    relation.trim() || undefined,
+          content_ar:  content.trim(),
+        }),
       })
       if (!res.ok) throw new Error('Server error')
       setStatus('success')
@@ -64,7 +69,7 @@ function TestimonialForm({ victimId }: { victimId: string }) {
           color:      'var(--accent-text)',
         }}
       >
-        + أضف شهادتك عن {/* name injected by parent */}هذا الشخص
+        {t('testimonial.addBtn')}
       </button>
     )
   }
@@ -87,7 +92,7 @@ function TestimonialForm({ victimId }: { victimId: string }) {
         style={{ borderBottom: '1px solid var(--border)' }}
       >
         <h2 className="font-bold text-sm" style={{ color: 'var(--accent-text)' }}>
-          أضف شهادتك
+          {t('testimonial.sectionTitle')}
         </h2>
         <button
           type="button"
@@ -110,9 +115,9 @@ function TestimonialForm({ victimId }: { victimId: string }) {
           lineHeight:   'var(--leading-loose)',
         }}>
           <div className="text-lg mb-1">✓</div>
-          <strong>شكراً لشهادتك</strong>
+          <strong>{t('testimonial.successTitle')}</strong>
           <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
-            ستُراجَع من قِبَل الفريق قبل نشرها
+            {t('testimonial.successNote')}
           </p>
           <button
             type="button"
@@ -120,37 +125,37 @@ function TestimonialForm({ victimId }: { victimId: string }) {
             className="mt-3 text-xs underline"
             style={{ background: 'none', border: 'none', color: 'var(--accent-text)', cursor: 'pointer' }}
           >
-            إغلاق
+            {t('testimonial.close')}
           </button>
         </div>
       ) : (
         <>
           <p className="text-xs mb-4" style={{ color: 'var(--text-muted)', lineHeight: 'var(--leading-loose)' }}>
-            شهادتك ستُحفَظ كمسودة وتُعرَض على الفريق قبل نشرها — نقدّر ثقتك وأمانتك.
+            {t('testimonial.guideline')}
           </p>
 
           {/* Row: name + relation */}
           <div className="grid grid-cols-2 gap-3 mb-3">
             <div>
               <label className="block text-xs mb-1" style={{ color: 'var(--text-muted)' }}>
-                اسمك <span style={{ color: 'var(--status-danger)' }}>*</span>
+                {t('testimonial.yourName')} <span style={{ color: 'var(--status-danger)' }}>{t('common.required')}</span>
               </label>
               <input
                 value={authorName}
                 onChange={e => setAuthorName(e.target.value)}
-                placeholder="محمد عبدالله"
+                placeholder={t('testimonial.namePlaceholder')}
                 required
                 style={inp}
               />
             </div>
             <div>
               <label className="block text-xs mb-1" style={{ color: 'var(--text-muted)' }}>
-                صلتك بالمتوفى
+                {t('testimonial.relation')}
               </label>
               <input
                 value={relation}
                 onChange={e => setRelation(e.target.value)}
-                placeholder="أخ · زوجة · صديق"
+                placeholder={t('testimonial.relationPlaceholder')}
                 style={inp}
               />
             </div>
@@ -159,12 +164,12 @@ function TestimonialForm({ victimId }: { victimId: string }) {
           {/* Testimonial body */}
           <div className="mb-4">
             <label className="block text-xs mb-1" style={{ color: 'var(--text-muted)' }}>
-              شهادتك <span style={{ color: 'var(--status-danger)' }}>*</span>
+              {t('testimonial.content')} <span style={{ color: 'var(--status-danger)' }}>{t('common.required')}</span>
             </label>
             <textarea
               value={content}
               onChange={e => setContent(e.target.value)}
-              placeholder="شارك ذكرى، لحظة، أو كلمة عن هذا الشخص..."
+              placeholder={t('testimonial.contentPlaceholder')}
               required
               rows={5}
               style={{
@@ -178,7 +183,7 @@ function TestimonialForm({ victimId }: { victimId: string }) {
 
           {status === 'error' && (
             <p className="text-xs mb-3" style={{ color: 'var(--status-danger)' }}>
-              ⚠️ حدث خطأ، يرجى المحاولة مرة أخرى.
+              {t('testimonial.error')}
             </p>
           )}
 
@@ -194,7 +199,7 @@ function TestimonialForm({ victimId }: { victimId: string }) {
                 cursor:     'pointer',
               }}
             >
-              إلغاء
+              {t('testimonial.cancel')}
             </button>
             <button
               type="submit"
@@ -208,7 +213,7 @@ function TestimonialForm({ victimId }: { victimId: string }) {
                 transition: 'background var(--dur) var(--ease)',
               }}
             >
-              {status === 'submitting' ? 'جارٍ الإرسال...' : 'إرسال الشهادة'}
+              {status === 'submitting' ? t('testimonial.submitting') : t('testimonial.submit')}
             </button>
           </div>
         </>
@@ -221,14 +226,14 @@ function TestimonialForm({ victimId }: { victimId: string }) {
 export default function VictimPage() {
   const { id }   = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { t }    = useTranslation()
+  const { t, i18n } = useTranslation()
   const { data: victim, loading } = useVictim(id ?? '')
 
   if (loading) return (
-    <div className="pt-24 text-center" style={{ color: 'var(--text-muted)' }}>جارٍ التحميل...</div>
+    <div className="pt-24 text-center" style={{ color: 'var(--text-muted)' }}>{t('common.loading')}</div>
   )
   if (!victim) return (
-    <div className="pt-24 text-center" style={{ color: 'var(--text-muted)' }}>لم يتم العثور على الضحية</div>
+    <div className="pt-24 text-center" style={{ color: 'var(--text-muted)' }}>{t('victim.notFound')}</div>
   )
 
   const card: React.CSSProperties = {
@@ -239,6 +244,11 @@ export default function VictimPage() {
     padding:      '1.75rem',
     marginBottom: '1.25rem',
   }
+
+  // Locale-aware date format
+  const dateLocale =
+    i18n.language === 'he' ? 'he-IL' :
+    i18n.language === 'en' ? 'en-GB' : 'ar-SA'
 
   const verifiedTestimonials = victim.testimonials?.filter(t => t.verified) ?? []
 
@@ -255,7 +265,7 @@ export default function VictimPage() {
           boxShadow:  'var(--shadow-sm)',
         }}
       >
-        ← {t('nav.victims')}
+        ← {t('victim.back')}
       </button>
 
       <div className="max-w-5xl mx-auto px-6 pb-16 grid md:grid-cols-[280px,1fr] gap-6 items-start">
@@ -289,12 +299,12 @@ export default function VictimPage() {
                 {victim.name_ar}
               </h1>
 
-              {[
-                [t('victim.age'),         `${victim.age} سنة`],
+              {([
+                [t('victim.age'),         `${victim.age} ${t('common.ageUnit')}`],
                 [t('victim.city'),        victim.city],
                 [t('victim.profession'),  victim.profession ?? '—'],
-                [t('victim.dateOfDeath'), new Date(victim.date_of_death).toLocaleDateString('ar-SA')],
-              ].map(([k, v]) => (
+                [t('victim.dateOfDeath'), new Date(victim.date_of_death).toLocaleDateString(dateLocale)],
+              ] as [string, string][]).map(([k, v]) => (
                 <div
                   key={k}
                   className="flex justify-between py-2 text-sm"
@@ -381,12 +391,12 @@ export default function VictimPage() {
           <div style={card}>
             <h2 className="font-bold mb-1"
               style={{ color: 'var(--accent-text)', paddingBottom: '.5rem', borderBottom: '1px solid var(--border)', marginBottom: '1rem' }}>
-              شارك ذكرى أو شهادة
+              {t('testimonial.sectionTitle')}
             </h2>
             <p className="text-xs mb-4" style={{ color: 'var(--text-muted)', lineHeight: 'var(--leading-loose)' }}>
-              هل عرفت {victim.name_ar}؟ كلمة منك تبقى — شهادتك ستُراجَع ثم تُنشَر.
+              {t('testimonial.prompt', { name: victim.name_ar })}
             </p>
-            <TestimonialForm victimId={victim.id} />
+            <TestimonialForm victimId={victim.id} victimName={victim.name_ar} />
           </div>
         </div>
       </div>

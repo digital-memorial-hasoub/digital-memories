@@ -25,12 +25,12 @@ export default function VictimCard({ victim }: Props) {
   return (
     <div
       onClick={() => navigate(`/victims/${victim.id}`)}
-      className="rounded-xl overflow-hidden cursor-pointer transition-all"
+      className="rounded-xl overflow-hidden cursor-pointer"
       style={{
-        background:  'var(--surface)',
-        border:      '1px solid var(--border)',
-        boxShadow:   'var(--shadow-sm)',
-        transition:  'transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease)',
+        background: 'var(--surface)',
+        border:     '1px solid var(--border)',
+        boxShadow:  'var(--shadow-sm)',
+        transition: 'transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease)',
       }}
       onMouseEnter={e => {
         e.currentTarget.style.borderColor = 'var(--accent)'
@@ -74,7 +74,7 @@ export default function VictimCard({ victim }: Props) {
       <div className="p-3">
         <div className="font-bold mb-1" style={{ color: 'var(--text-strong)' }}>{victim.name_ar}</div>
         <div className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-          {victim.age} سنة · {new Date(victim.date_of_death).getFullYear()}
+          {victim.age} {t('common.ageUnit')} · {new Date(victim.date_of_death).getFullYear()}
         </div>
         {victim.city && (
           <span
