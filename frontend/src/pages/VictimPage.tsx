@@ -18,8 +18,8 @@ const TYPE_BG: Record<string, string> = {
 }
 
 /* ─── Testimonial submission form ──────────────────────────────────────── */
-function TestimonialForm({ victimId, victimName }: { victimId: string; victimName: string }) {
-  const { t, i18n } = useTranslation()
+function TestimonialForm({ victimId }: { victimId: string }) {
+  const { t } = useTranslation()
   const [authorName, setAuthorName] = useState('')
   const [relation,   setRelation]   = useState('')
   const [content,    setContent]    = useState('')
@@ -250,7 +250,7 @@ export default function VictimPage() {
     i18n.language === 'he' ? 'he-IL' :
     i18n.language === 'en' ? 'en-GB' : 'ar-SA'
 
-  const verifiedTestimonials = victim.testimonials?.filter(t => t.verified) ?? []
+  const verifiedTestimonials = victim.testimonials?.filter(tm => tm.verified) ?? []
 
   return (
     <div className="pt-16" style={{ background: 'var(--bg)', minHeight: '100vh' }}>
@@ -396,7 +396,7 @@ export default function VictimPage() {
             <p className="text-xs mb-4" style={{ color: 'var(--text-muted)', lineHeight: 'var(--leading-loose)' }}>
               {t('testimonial.prompt', { name: victim.name_ar })}
             </p>
-            <TestimonialForm victimId={victim.id} victimName={victim.name_ar} />
+            <TestimonialForm victimId={victim.id} />
           </div>
         </div>
       </div>
