@@ -3,13 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Palette sourced from project logo: navy + olive + warm cream on deep dark */
 :root {
-  --bg:      #0d1117;
-  --surface: #161b22;
-  --border:  #30363d;
-  --gold:    #c9a84c;
-  --text:    #e6edf3;
-  --muted:   #8b949e;
+  --bg:        #0b1220;   /* deep dark navy */
+  --surface:   #111d30;   /* dark navy surface */
+  --border:    #1e3248;   /* navy border */
+  --gold:      #8fa850;   /* olive green (logo leaves) */
+  --gold-light:#b5cc72;   /* lighter olive for hover/highlights */
+  --navy:      #4a7ab5;   /* mid navy blue accent */
+  --text:      #e4dfcf;   /* warm cream (logo background tone) */
+  --muted:     #7a8fa8;   /* muted blue-grey */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
