@@ -55,38 +55,57 @@ export default function Home() {
       {/* ── Hero ── */}
       <section
         className="text-center py-20 px-6"
-        style={{ background: 'var(--wash-olive)', borderBottom: '1px solid var(--border)' }}
+        style={{ background: 'var(--wash-olive)', borderBottom: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}
       >
-        <span
-          className="inline-block text-xs mb-6 px-4 py-1.5 rounded-full"
-          style={{ color: 'var(--accent-text)', border: '1px solid var(--accent-line)', letterSpacing: 'var(--tracking-wide)' }}
-        >
-          {t('home.eyebrow')}
-        </span>
+        {/* Faded logo watermark */}
+        <img
+          src="/logo.svg"
+          alt=""
+          aria-hidden
+          style={{
+            position: 'absolute', top: '50%', left: '50%',
+            transform: 'translate(-50%,-52%)',
+            width: 'min(620px,90%)',
+            opacity: 0.10,
+            mixBlendMode: 'multiply',
+            pointerEvents: 'none',
+            userSelect: 'none',
+          }}
+        />
 
-        <h1 className="text-5xl font-black mb-3" style={{ color: 'var(--ink-800)', lineHeight: 'var(--leading-tight)' }}>
-          {t('hero.title')} —{' '}
-          <span style={{ color: 'var(--accent-text)' }}>{t('hero.subtitle')}</span>
-        </h1>
+        {/* Foreground content sits above watermark */}
+        <div style={{ position: 'relative' }}>
+          <span
+            className="inline-block text-xs mb-6 px-4 py-1.5 rounded-full"
+            style={{ color: 'var(--accent-text)', border: '1px solid var(--accent-line)', letterSpacing: 'var(--tracking-wide)' }}
+          >
+            {t('home.eyebrow')}
+          </span>
 
-        <p className="text-lg max-w-xl mx-auto mb-10" style={{ color: 'var(--text-muted)', lineHeight: 'var(--leading-loose)' }}>
-          {t('hero.desc')}
-        </p>
+          <h1 className="text-5xl font-black mb-3" style={{ color: 'var(--ink-800)', lineHeight: 'var(--leading-tight)' }}>
+            {t('hero.title')} —{' '}
+            <span style={{ color: 'var(--accent-text)' }}>{t('hero.subtitle')}</span>
+          </h1>
 
-        {/* Live stats */}
-        <div className="flex justify-center gap-12 flex-wrap">
-          {statItems.map(([n, l]) => (
-            <div key={l} className="text-center">
-              <div
-                className="text-4xl font-black"
-                dir="ltr"
-                style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', lineHeight: 'var(--leading-tight)' }}
-              >
-                {n}
+          <p className="text-lg max-w-xl mx-auto mb-10" style={{ color: 'var(--text-muted)', lineHeight: 'var(--leading-loose)' }}>
+            {t('hero.desc')}
+          </p>
+
+          {/* Live stats */}
+          <div className="flex justify-center gap-12 flex-wrap">
+            {statItems.map(([n, l]) => (
+              <div key={l} className="text-center">
+                <div
+                  className="text-4xl font-black"
+                  dir="ltr"
+                  style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', lineHeight: 'var(--leading-tight)' }}
+                >
+                  {n}
+                </div>
+                <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{l}</div>
               </div>
-              <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{l}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
