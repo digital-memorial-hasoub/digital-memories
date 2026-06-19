@@ -59,7 +59,7 @@ export default function Home() {
       >
         {/* Faded logo watermark */}
         <img
-          src="/logo.svg"
+          src="/logo-mark.png"
           alt=""
           aria-hidden
           style={{

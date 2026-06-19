@@ -28,7 +28,7 @@ export default function Header() {
     >
       {/* Logo */}
       <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
-        <img src="/logo.svg" alt={t('hero.subtitle')} className="h-9 w-9 object-contain" />
+        <img src="/logo-mark.png" alt={t('hero.subtitle')} className="h-9 w-9 object-contain" />
         <div>
           <div className="text-sm font-bold leading-tight" style={{ color: 'var(--ink-800)' }}>{t('hero.subtitle')}</div>
           <div className="text-xs leading-tight" style={{ color: 'var(--text-muted)' }}>{t('home.eyebrow')}</div>
