@@ -6,20 +6,48 @@ import OnThisDay from '../components/OnThisDay'
 import { api } from '../lib/api'
 import type { Victim, PaginatedResponse } from '../types'
 
+interface SummaryStats {
+  totalVictims: number
+  totalCities:  number
+  minYear:      number | null
+  maxYear:      number | null
+}
+
 export default function Home() {
   const { t }    = useTranslation()
   const navigate = useNavigate()
-  const [recent, setRecent]     = useState<Victim[]>([])
-  const [showOTD, setShowOTD]   = useState(false)
+  const [recent,  setRecent]  = useState<Victim[]>([])
+  const [stats,   setStats]   = useState<SummaryStats | null>(null)
+  const [showOTD, setShowOTD] = useState(false)
 
   useEffect(() => {
     api.victims.list({ limit: '8', status: 'published' })
       .then((res) => setRecent((res as PaginatedResponse<Victim>).data ?? []))
       .catch(() => setRecent([]))
 
+    fetch('/api/stats/summary')
+      .then(r => r.json())
+      .then(setStats)
+      .catch(() => {})
+
     const timer = setTimeout(() => setShowOTD(true), 800)
     return () => clearTimeout(timer)
   }, [])
+
+  // Format numbers nicely — show real DB counts
+  const victimLabel = stats ? `${stats.totalVictims}` : '…'
+  const cityLabel   = stats ? `${stats.totalCities}`  : '…'
+  const yearLabel   = stats
+    ? (stats.minYear && stats.maxYear && stats.minYear !== stats.maxYear
+        ? `${stats.minYear}–${stats.maxYear}`
+        : stats.maxYear ? `${stats.maxYear}` : '…')
+    : '…'
+
+  const statItems = [
+    [victimLabel, 'ضحية موثَّقة'],
+    [cityLabel,   'مدينة وبلدة'],
+    [yearLabel,   'سنوات التوثيق'],
+  ] as const
 
   return (
     <div className="pt-16">
@@ -36,10 +64,15 @@ export default function Home() {
           {t('hero.title')} — <span style={{ color: 'var(--gold)' }}>{t('hero.subtitle')}</span>
         </h1>
         <p className="text-lg max-w-xl mx-auto mb-10" style={{ color: 'var(--muted)' }}>{t('hero.desc')}</p>
+
+        {/* Live stats from DB */}
         <div className="flex justify-center gap-12 flex-wrap">
-          {[['٥٠٠+','ضحية معروفة'],['١١','مدينة وبلدة'],['٢٠٢٢–٢٠٢٤','سنوات التوثيق']].map(([n,l]) => (
+          {statItems.map(([n, l]) => (
             <div key={l} className="text-center">
-              <div className="text-4xl font-black" style={{ color: 'var(--gold-light, #e8c97a)' }}>{n}</div>
+              <div className="text-4xl font-black" dir="ltr"
+                style={{ color: 'var(--gold-light, #e8c97a)' }}>
+                {n}
+              </div>
               <div className="text-sm mt-1" style={{ color: 'var(--muted)' }}>{l}</div>
             </div>
           ))}

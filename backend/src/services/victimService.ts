@@ -73,6 +73,28 @@ export async function getOnThisDay() {
   })
 }
 
+export async function getSummaryStats() {
+  const [total, cities, dateRange] = await Promise.all([
+    prisma.victim.count({ where: { status: 'published' } }),
+    prisma.victim.groupBy({ by: ['city'], where: { status: 'published' } }),
+    prisma.victim.aggregate({
+      where:   { status: 'published' },
+      _min:    { date_of_death: true },
+      _max:    { date_of_death: true },
+    }),
+  ])
+
+  const minYear = dateRange._min.date_of_death ? new Date(dateRange._min.date_of_death).getFullYear() : null
+  const maxYear = dateRange._max.date_of_death ? new Date(dateRange._max.date_of_death).getFullYear() : null
+
+  return {
+    totalVictims: total,
+    totalCities:  cities.length,
+    minYear,
+    maxYear,
+  }
+}
+
 export async function getCityStats() {
   const CITY_POP: Record<string, number> = {
     'أم الفحم': 55000, 'باقة الغربية': 35000, 'الناصرة': 77000,
