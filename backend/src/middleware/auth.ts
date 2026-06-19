@@ -1,49 +1,47 @@
 import type { Request, Response, NextFunction } from 'express'
-import jwt from 'jsonwebtoken'
+import { createClient } from '@supabase/supabase-js'
 
 export interface AuthRequest extends Request {
   userId?:    string
   userEmail?: string
 }
 
-interface SupabaseJwtPayload {
-  sub:   string
-  email: string
-  role:  string
-  aud:   string
-  exp:   number
-  iat:   number
-}
+// Use the existing VITE_ vars (available in Vercel serverless functions regardless of prefix)
+// Falls back to non-prefixed versions for local dev
+const SUPABASE_URL  = process.env.VITE_SUPABASE_URL  ?? process.env.SUPABASE_URL  ?? ''
+const SUPABASE_KEY  = process.env.VITE_SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY ?? ''
 
-export function requireAdmin(req: AuthRequest, res: Response, next: NextFunction): void {
+export async function requireAdmin(
+  req: AuthRequest, res: Response, next: NextFunction
+): Promise<void> {
   const authHeader = req.headers.authorization
   if (!authHeader?.startsWith('Bearer ')) {
     res.status(401).json({ error: 'No token provided' })
     return
   }
 
-  const token  = authHeader.slice(7)
-  const secret = process.env.SUPABASE_JWT_SECRET
+  const token = authHeader.slice(7)
 
-  if (!secret) {
-    console.error('SUPABASE_JWT_SECRET is not set')
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    console.error('Supabase URL or anon key not set')
     res.status(500).json({ error: 'Server configuration error' })
     return
   }
 
   try {
-    const payload = jwt.verify(token, secret) as SupabaseJwtPayload
+    // Verify token via Supabase — avoids needing SUPABASE_JWT_SECRET to be correct
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+    const { data: { user }, error } = await supabase.auth.getUser(token)
 
-    // Supabase Auth tokens have role: 'authenticated'
-    if (payload.role !== 'authenticated') {
-      res.status(403).json({ error: 'Insufficient permissions' })
+    if (error || !user) {
+      res.status(401).json({ error: 'Invalid or expired token' })
       return
     }
 
-    req.userId    = payload.sub
-    req.userEmail = payload.email
+    req.userId    = user.id
+    req.userEmail = user.email ?? ''
     next()
-  } catch (err) {
+  } catch {
     res.status(401).json({ error: 'Invalid or expired token' })
   }
 }
