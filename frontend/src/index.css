@@ -1,36 +1,202 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
+/* ============================================================
+   They Will Not Be Forgotten — لن يُنسَوا
+   Design System — Light theme (cream paper, navy ink, olive accent)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Heebo:wght@300;400;600;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Palette sourced from project logo: navy + olive + warm cream on deep dark */
+/* ── Color tokens ──────────────────────────────────────────── */
 :root {
-  --bg:        #0b1220;   /* deep dark navy */
-  --surface:   #111d30;   /* dark navy surface */
-  --border:    #1e3248;   /* navy border */
-  --gold:      #8fa850;   /* olive green (logo leaves) */
-  --gold-light:#b5cc72;   /* lighter olive for hover/highlights */
-  --navy:      #4a7ab5;   /* mid navy blue accent */
-  --text:      #e4dfcf;   /* warm cream (logo background tone) */
-  --muted:     #7a8fa8;   /* muted blue-grey */
+  /* Paper neutrals */
+  --paper-50:  #fcf9f2;
+  --paper-100: #f7f2e8;
+  --paper-200: #f1ece0;
+  --paper-300: #e8e1d1;
+  --sand-400:  #ddd5c2;
+  --sand-500:  #cabfa3;
+  --paper-bg:  #f6f1e6;
+
+  /* Ink — deep navy */
+  --ink-900: #0f253a;
+  --ink-800: #16304a;
+  --ink-700: #1f3a52;
+  --ink-600: #43576b;
+  --ink-500: #6a7a8a;
+
+  /* Olive-sage (leaves — primary accent) */
+  --olive-700: #56682f;
+  --olive-600: #6b8038;
+  --olive-500: #7e9445;
+  --olive-400: #8fa850;
+  --olive-300: #a8bd6e;
+
+  /* Slate-blue (dissolving pixels — secondary) */
+  --slate-600: #3a5f80;
+  --slate-500: #4a7ab5;
+  --slate-400: #6b8bab;
+  --blue-grey-500: #9aa6b2;
+  --blue-grey-600: #6a7a8a;
+
+  /* Violence-type semantic */
+  --type-homicide:    #c0392b;
+  --type-domestic:    #cf711b;
+  --type-shooting:    #8e44ad;
+  --type-other:       #2c7fb8;
+  --type-homicide-bg: rgba(192,57,43,.12);
+  --type-domestic-bg: rgba(207,113,27,.13);
+  --type-shooting-bg: rgba(142,68,173,.12);
+  --type-other-bg:    rgba(44,127,184,.12);
+
+  /* Status / admin */
+  --status-published:    #2f8f4e;
+  --status-pending:      #cf711b;
+  --status-archived:     #8a8472;
+  --status-danger:       #c0392b;
+  --status-published-bg: rgba(47,143,78,.13);
+  --status-pending-bg:   rgba(207,113,27,.13);
+  --status-danger-bg:    rgba(192,57,43,.10);
+
+  /* ── Semantic aliases ── */
+  --bg:            var(--paper-200);
+  --bg-raised:     var(--paper-100);
+  --surface:       var(--paper-50);
+  --surface-hover: var(--paper-100);
+  --border:        var(--sand-400);
+  --border-strong: var(--sand-500);
+
+  --text:        var(--ink-700);
+  --text-strong: var(--ink-900);
+  --text-muted:  var(--ink-600);
+  --text-faint:  var(--ink-500);
+
+  --accent:       var(--olive-600);
+  --accent-hover: var(--olive-700);
+  --accent-soft:  rgba(107,128,56,.13);
+  --accent-line:  rgba(107,128,56,.34);
+  --accent-2:     var(--slate-500);
+  --accent-text:  var(--olive-700);
+  --on-accent:    #fcf9f2;
+  --ink:          var(--ink-800);
+
+  /* Back-compat aliases (old code used --gold / --muted / --navy) */
+  --gold:       var(--olive-600);
+  --gold-light: var(--olive-400);
+  --muted:      var(--ink-600);
+  --navy:       var(--slate-500);
+
+  /* Washes */
+  --wash-olive: linear-gradient(180deg,#e9edda 0%,var(--bg) 100%);
+  --wash-photo: linear-gradient(135deg,#e4e8d6,#e9e1d2);
+
+  /* Glass header */
+  --glass-bg:   rgba(241,236,224,.86);
+  --glass-blur: blur(12px);
+
+  /* Modal scrim */
+  --scrim:      rgba(22,40,60,.42);
+  --scrim-blur: blur(3px);
+
+  /* ── Typography ── */
+  --font-body:   'Cairo', sans-serif;
+  --font-hebrew: 'Heebo', sans-serif;
+  --font-mono:   ui-monospace, 'Cascadia Code', monospace;
+
+  --text-2xs:     0.65rem;
+  --text-xs:      0.75rem;
+  --text-sm:      0.875rem;
+  --text-base:    1rem;
+  --text-md:      1.0625rem;
+  --text-lg:      1.125rem;
+  --text-xl:      1.25rem;
+  --text-2xl:     1.5rem;
+  --text-3xl:     1.875rem;
+  --text-display: 2.5rem;
+
+  --weight-regular:  400;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+  --weight-black:    900;
+
+  --leading-tight:  1.25;
+  --leading-normal: 1.5;
+  --leading-loose:  1.9;
+
+  --tracking-wide: 0.08em;
+
+  /* ── Spacing (4px base) ── */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* ── Radii ── */
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   10px;
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
+  --radius-pill: 9999px;
+
+  /* ── Shadows (soft, navy-tinted) ── */
+  --shadow-sm: 0 1px 3px rgba(22,40,60,.06), 0 1px 2px rgba(22,40,60,.04);
+  --shadow-md: 0 4px 12px rgba(22,40,60,.10), 0 2px 4px rgba(22,40,60,.06);
+  --shadow-lg: 0 12px 32px rgba(22,40,60,.14), 0 4px 8px rgba(22,40,60,.08);
+
+  /* ── Motion ── */
+  --dur:  180ms;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --lift: translateY(-3px);
+
+  /* ── Layout ── */
+  --header-h:    64px;
+  --sidebar-w:   240px;
+  --content-max: 72rem;
 }
 
+/* ── Reset ──────────────────────────────────────────────────── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Cairo', sans-serif;
+  font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
   direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: var(--leading-normal);
 }
 
-::-webkit-scrollbar { width: 6px; }
+[dir="ltr"] { direction: ltr; }
+[lang="he"], .he { font-family: var(--font-hebrew); }
+
+a { color: inherit; text-decoration: none; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
 
-/* Focus ring: makes active form fields clearly visible on the dark background */
+::selection { background: var(--accent-soft); color: var(--text-strong); }
+
+/* ── Focus ring ──────────────────────────────────────────────── */
 input:focus, textarea:focus, select:focus {
   outline: none;
-  border-color: var(--gold) !important;
-  box-shadow: 0 0 0 3px rgba(143, 168, 80, 0.15);
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* ── Keyframes ───────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

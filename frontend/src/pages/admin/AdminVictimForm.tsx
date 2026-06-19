@@ -37,9 +37,10 @@ const CITY_COORDS: Record<string, [number, number]> = {
 const inp: React.CSSProperties = {
   width: '100%', padding: '.65rem .9rem',
   background: 'var(--bg)', border: '1px solid var(--border)',
-  borderRadius: '8px', color: 'var(--text)',
-  fontFamily: 'Cairo, sans-serif', fontSize: '.88rem', outline: 'none',
+  borderRadius: 'var(--radius-md)', color: 'var(--text)',
+  fontFamily: 'var(--font-body)', fontSize: '.88rem', outline: 'none',
   boxSizing: 'border-box',
+  transition: 'border-color var(--dur) var(--ease)',
 }
 const grid2: React.CSSProperties = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }
 
@@ -59,8 +60,8 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '14px', padding: '1.5rem', marginBottom: '1.25rem' }}>
-      <h2 style={{ fontSize: '.95rem', fontWeight: 700, color: 'var(--gold)', marginBottom: '1.25rem', paddingBottom: '.5rem', borderBottom: '1px solid var(--border)' }}>
+    <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-xl)', padding: '1.5rem', marginBottom: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
+      <h2 style={{ fontSize: '.95rem', fontWeight: 700, color: 'var(--accent-text)', marginBottom: '1.25rem', paddingBottom: '.5rem', borderBottom: '1px solid var(--border)' }}>
         {title}
       </h2>
       {children}

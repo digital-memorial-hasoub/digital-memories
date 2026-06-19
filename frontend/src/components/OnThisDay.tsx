@@ -21,36 +21,83 @@ export default function OnThisDay({ onClose }: Props) {
   const handleClick = (id: string) => { navigate(`/victims/${id}`); onClose() }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,.75)', backdropFilter: 'blur(4px)' }}>
-      <div className="w-full max-w-md rounded-2xl overflow-hidden animate-[fadeUp_.3s_ease]"
-        style={{ background: 'var(--surface)', border: '1px solid var(--gold)' }}>
-
-        <div className="p-5 flex items-start justify-between"
-          style={{ background: 'linear-gradient(135deg,#1a2010,#0d1117)', borderBottom: '1px solid var(--border)' }}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'var(--scrim)', backdropFilter: 'var(--scrim-blur)' }}
+    >
+      <div
+        className="w-full max-w-md rounded-2xl overflow-hidden"
+        style={{
+          background: 'var(--surface)',
+          border:     '1px solid var(--border)',
+          boxShadow:  'var(--shadow-lg)',
+          animation:  'fadeUp .3s var(--ease)',
+        }}
+      >
+        {/* Header — navy panel */}
+        <div
+          className="p-5 flex items-start justify-between"
+          style={{
+            background:   'var(--ink-800)',
+            borderBottom: '1px solid rgba(255,255,255,.08)',
+          }}
+        >
           <div>
-            <p className="text-xs tracking-widest mb-1" style={{ color: 'var(--gold)' }}>📅 {t('onThisDay.title')}</p>
-            <h2 className="text-xl font-bold" style={{ color: 'var(--gold-light, #e8c97a)' }}>{t('onThisDay.subtitle')}</h2>
-            <p className="text-xs mt-1" style={{ color: 'var(--muted)' }}>{today}</p>
+            <p
+              className="text-xs tracking-widest mb-1"
+              style={{ color: 'var(--olive-300)', letterSpacing: 'var(--tracking-wide)' }}
+            >
+              {t('onThisDay.title')}
+            </p>
+            <h2 className="text-xl font-bold" style={{ color: 'var(--paper-50)' }}>
+              {t('onThisDay.subtitle')}
+            </h2>
+            <p className="text-xs mt-1" style={{ color: 'var(--blue-grey-500)' }}>{today}</p>
           </div>
-          <button onClick={onClose} className="text-sm px-2 py-1 rounded transition-all"
-            style={{ border: '1px solid var(--border)', color: 'var(--muted)' }}>✕</button>
+          <button
+            onClick={onClose}
+            className="text-sm px-2 py-1 rounded transition-all"
+            style={{ border: '1px solid rgba(255,255,255,.15)', color: 'var(--blue-grey-500)', background: 'none' }}
+          >
+            ✕
+          </button>
         </div>
 
+        {/* List */}
         <div className="p-4 max-h-[55vh] overflow-y-auto space-y-3">
           {victims.length === 0 && (
-            <p className="text-center py-4 text-sm" style={{ color: 'var(--muted)' }}>جارٍ التحميل...</p>
+            <p className="text-center py-4 text-sm" style={{ color: 'var(--text-muted)' }}>
+              جارٍ التحميل...
+            </p>
           )}
           {victims.map((v) => (
-            <div key={v.id} onClick={() => handleClick(v.id)}
+            <div
+              key={v.id}
+              onClick={() => handleClick(v.id)}
               className="flex gap-3 items-center p-3 rounded-xl cursor-pointer transition-all"
-              style={{ background: 'rgba(255,255,255,.03)', border: '1px solid var(--border)' }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--gold)')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
-              <span className="text-3xl flex-shrink-0">👤</span>
+              style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--accent)')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}
+            >
+              {/* Silhouette placeholder */}
+              <div
+                className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center"
+                style={{ background: 'var(--wash-photo)' }}
+              >
+                {v.photo_url ? (
+                  <img src={v.photo_url} alt={v.name_ar} className="w-full h-full object-cover rounded-full" />
+                ) : (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="var(--blue-grey-500)" strokeWidth="1.5"
+                    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+                  </svg>
+                )}
+              </div>
               <div>
-                <p className="font-bold">{v.name_ar}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'var(--muted)' }}>
+                <p className="font-bold" style={{ color: 'var(--text-strong)' }}>{v.name_ar}</p>
+                <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
                   {v.age} سنة · {v.city} · {new Date(v.date_of_death).getFullYear()}
                 </p>
               </div>
@@ -58,15 +105,20 @@ export default function OnThisDay({ onClose }: Props) {
           ))}
         </div>
 
+        {/* Footer */}
         <div className="p-4 flex gap-3 justify-end" style={{ borderTop: '1px solid var(--border)' }}>
-          <button onClick={onClose}
+          <button
+            onClick={onClose}
             className="px-4 py-2 rounded-lg text-sm transition-all"
-            style={{ border: '1px solid var(--border)', color: 'var(--muted)' }}>
+            style={{ border: '1px solid var(--border)', color: 'var(--text-muted)', background: 'none' }}
+          >
             {t('onThisDay.skip')}
           </button>
-          <button onClick={() => { navigate('/victims'); onClose() }}
+          <button
+            onClick={() => { navigate('/victims'); onClose() }}
             className="px-4 py-2 rounded-lg text-sm font-bold transition-all"
-            style={{ background: 'var(--gold)', color: '#0d1117' }}>
+            style={{ background: 'var(--accent)', color: 'var(--on-accent)', border: 'none' }}
+          >
             {t('onThisDay.viewAll')}
           </button>
         </div>

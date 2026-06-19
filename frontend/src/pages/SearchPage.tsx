@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next'
 import VictimCard from '../components/VictimCard'
 import { useVictims } from '../hooks/useVictims'
 
-const CITIES = ['أم الفحم','الناصرة','باقة الغربية','شفاعمرو','رهط','طمرة','كفر قاسم','عكا','الطيبة','كفر كنا','تل شيفع','المغار','جلجولية']
+const CITIES = [
+  'أم الفحم','الناصرة','باقة الغربية','شفاعمرو','رهط','طمرة',
+  'كفر قاسم','عكا','الطيبة','كفر كنا','تل شيفع','المغار','جلجولية',
+]
 
 export default function SearchPage() {
   const { t } = useTranslation()
@@ -13,36 +16,60 @@ export default function SearchPage() {
   const [type, setType] = useState('all')
 
   const params: Record<string, string> = {}
-  if (q)           params.search = q
-  if (city !== 'all') params.city = city
-  if (year !== 'all') params.year = year
-  if (type !== 'all') params.type = type
+  if (q)              params.search = q
+  if (city !== 'all') params.city   = city
+  if (year !== 'all') params.year   = year
+  if (type !== 'all') params.type   = type
 
   const { data, loading } = useVictims(params)
   const victims = data?.data ?? []
 
-  const selectStyle = {
-    padding: '.5rem .8rem',
-    background: 'var(--bg)',
-    border: '1px solid var(--border)',
-    borderRadius: '8px',
-    color: 'var(--muted)',
-    fontFamily: 'Cairo, sans-serif',
-    fontSize: '.85rem',
-    outline: 'none',
+  const selectStyle: React.CSSProperties = {
+    padding:     '.5rem .8rem',
+    background:  'var(--bg)',
+    border:      '1px solid var(--border)',
+    borderRadius: 'var(--radius-md)',
+    color:       'var(--text-muted)',
+    fontFamily:  'var(--font-body)',
+    fontSize:    '.85rem',
+    outline:     'none',
+    cursor:      'pointer',
   }
 
   return (
     <div className="pt-16 max-w-6xl mx-auto px-6 py-10">
-      <h1 className="text-2xl font-black mb-2">قاعدة بيانات الضحايا</h1>
-      <p className="text-sm mb-8" style={{ color: 'var(--muted)' }}>ابحث عن ضحية بالاسم، المدينة، السنة، أو نوع الجريمة.</p>
 
-      <div className="flex flex-wrap gap-3 p-5 rounded-xl mb-6"
-        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-        <input value={q} onChange={e => setQ(e.target.value)}
+      {/* Heading */}
+      <h1 className="text-2xl font-black mb-1" style={{ color: 'var(--text-strong)' }}>
+        قاعدة بيانات الضحايا
+      </h1>
+      <p className="text-sm mb-8" style={{ color: 'var(--text-muted)' }}>
+        ابحث عن ضحية بالاسم، المدينة، السنة، أو نوع الجريمة.
+      </p>
+
+      {/* Filter bar */}
+      <div
+        className="flex flex-wrap gap-3 p-5 rounded-xl mb-6"
+        style={{
+          background: 'var(--surface)',
+          border:     '1px solid var(--border)',
+          boxShadow:  'var(--shadow-sm)',
+        }}
+      >
+        <input
+          value={q}
+          onChange={e => setQ(e.target.value)}
           placeholder={t('search.placeholder')}
-          className="flex-1 min-w-48 px-3 py-2 rounded-lg text-sm outline-none"
-          style={{ background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text)', fontFamily: 'Cairo, sans-serif' }} />
+          className="flex-1 min-w-48 px-3 py-2 rounded-lg text-sm"
+          style={{
+            background:   'var(--bg)',
+            border:       '1px solid var(--border)',
+            borderRadius: 'var(--radius-md)',
+            color:        'var(--text)',
+            fontFamily:   'var(--font-body)',
+            outline:      'none',
+          }}
+        />
         <select value={city} onChange={e => setCity(e.target.value)} style={selectStyle}>
           <option value="all">{t('search.allCities')}</option>
           {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
@@ -59,14 +86,24 @@ export default function SearchPage() {
         </select>
       </div>
 
-      <p className="text-sm mb-4" style={{ color: 'var(--muted)' }}>
-        {loading ? 'جارٍ البحث...' : <><strong style={{ color: 'var(--gold-light,#e8c97a)' }}>{victims.length}</strong> {t('search.results')}</>}
+      {/* Result count */}
+      <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
+        {loading ? 'جارٍ البحث...' : (
+          <>
+            <strong style={{ color: 'var(--accent-text)', fontWeight: 700 }}>{victims.length}</strong>
+            {' '}{t('search.results')}
+          </>
+        )}
       </p>
 
+      {/* Empty state */}
       {!loading && victims.length === 0 && (
-        <p className="text-center py-16" style={{ color: 'var(--muted)' }}>{t('search.noResults')}</p>
+        <p className="text-center py-16" style={{ color: 'var(--text-muted)' }}>
+          {t('search.noResults')}
+        </p>
       )}
 
+      {/* Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
         {victims.map(v => <VictimCard key={v.id} victim={v} />)}
       </div>

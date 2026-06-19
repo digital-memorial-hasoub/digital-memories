@@ -34,7 +34,6 @@ export default function Home() {
     return () => clearTimeout(timer)
   }, [])
 
-  // Format numbers nicely — show real DB counts
   const victimLabel = stats ? `${stats.totalVictims}` : '…'
   const cityLabel   = stats ? `${stats.totalCities}`  : '…'
   const yearLabel   = stats
@@ -43,50 +42,73 @@ export default function Home() {
         : stats.maxYear ? `${stats.maxYear}` : '…')
     : '…'
 
-  const statItems = [
+  const statItems: [string, string][] = [
     [victimLabel, 'ضحية موثَّقة'],
     [cityLabel,   'مدينة وبلدة'],
     [yearLabel,   'سنوات التوثيق'],
-  ] as const
+  ]
 
   return (
     <div className="pt-16">
       {showOTD && <OnThisDay onClose={() => setShowOTD(false)} />}
 
-      {/* Hero */}
-      <section className="relative text-center py-20 px-6"
-        style={{ background: 'linear-gradient(180deg,#0f1a0a 0%,var(--bg) 100%)', borderBottom: '1px solid var(--border)' }}>
-        <div className="inline-block text-xs tracking-widest px-4 py-1.5 rounded-full mb-6"
-          style={{ color: 'var(--gold)', border: '1px solid rgba(201,168,76,.4)' }}>
+      {/* ── Hero ── */}
+      <section
+        className="text-center py-20 px-6"
+        style={{ background: 'var(--wash-olive)', borderBottom: '1px solid var(--border)' }}
+      >
+        {/* Eyebrow */}
+        <span
+          className="inline-block text-xs mb-6 px-4 py-1.5 rounded-full"
+          style={{
+            color:   'var(--accent-text)',
+            border:  '1px solid var(--accent-line)',
+            letterSpacing: 'var(--tracking-wide)',
+          }}
+        >
           مشروع التخليد الرقمي
-        </div>
-        <h1 className="text-5xl font-black mb-3" dir="rtl">
-          {t('hero.title')} — <span style={{ color: 'var(--gold)' }}>{t('hero.subtitle')}</span>
-        </h1>
-        <p className="text-lg max-w-xl mx-auto mb-10" style={{ color: 'var(--muted)' }}>{t('hero.desc')}</p>
+        </span>
 
-        {/* Live stats from DB */}
+        <h1 className="text-5xl font-black mb-3" dir="rtl" style={{ color: 'var(--ink-800)', lineHeight: 'var(--leading-tight)' }}>
+          {t('hero.title')} —{' '}
+          <span style={{ color: 'var(--accent-text)' }}>{t('hero.subtitle')}</span>
+        </h1>
+
+        <p className="text-lg max-w-xl mx-auto mb-10" style={{ color: 'var(--text-muted)', lineHeight: 'var(--leading-loose)' }}>
+          {t('hero.desc')}
+        </p>
+
+        {/* Live stats */}
         <div className="flex justify-center gap-12 flex-wrap">
           {statItems.map(([n, l]) => (
             <div key={l} className="text-center">
-              <div className="text-4xl font-black" dir="ltr"
-                style={{ color: 'var(--gold-light, #e8c97a)' }}>
+              <div
+                className="text-4xl font-black"
+                dir="ltr"
+                style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', lineHeight: 'var(--leading-tight)' }}
+              >
                 {n}
               </div>
-              <div className="text-sm mt-1" style={{ color: 'var(--muted)' }}>{l}</div>
+              <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{l}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Recent */}
+      {/* ── Recent ── */}
       <section className="max-w-6xl mx-auto px-6 py-12">
         <div className="flex items-baseline justify-between mb-6">
-          <h2 className="text-xl font-bold">آخر التوثيقات</h2>
-          <button onClick={() => navigate('/victims')}
+          <h2 className="text-xl font-bold" style={{ color: 'var(--text-strong)' }}>آخر التوثيقات</h2>
+          <button
+            onClick={() => navigate('/victims')}
             className="text-sm px-3 py-1.5 rounded-lg transition-all"
-            style={{ color: 'var(--gold)', border: '1px solid rgba(201,168,76,.35)' }}>
-            عرض الكل →
+            style={{
+              color:   'var(--accent-text)',
+              border:  '1px solid var(--accent-line)',
+              background: 'transparent',
+            }}
+          >
+            عرض الكل ←
           </button>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -94,23 +116,46 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Map teaser */}
+      {/* ── Map teaser ── */}
       <section className="max-w-6xl mx-auto px-6 pb-16">
         <div className="flex items-baseline justify-between mb-6">
-          <h2 className="text-xl font-bold">{t('map.title')}</h2>
-          <button onClick={() => navigate('/map')}
+          <h2 className="text-xl font-bold" style={{ color: 'var(--text-strong)' }}>{t('map.title')}</h2>
+          <button
+            onClick={() => navigate('/map')}
             className="text-sm px-3 py-1.5 rounded-lg transition-all"
-            style={{ color: 'var(--gold)', border: '1px solid rgba(201,168,76,.35)' }}>
-            فتح الخريطة →
+            style={{
+              color:   'var(--accent-text)',
+              border:  '1px solid var(--accent-line)',
+              background: 'transparent',
+            }}
+          >
+            فتح الخريطة ←
           </button>
         </div>
-        <div onClick={() => navigate('/map')}
+        <div
+          onClick={() => navigate('/map')}
           className="h-52 rounded-xl flex flex-col items-center justify-center gap-3 cursor-pointer transition-all"
-          style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
-          onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--gold)')}
-          onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
-          <span className="text-5xl">🗺️</span>
-          <p className="text-sm" style={{ color: 'var(--muted)' }}>خريطة حرارية تفاعلية — اضغط للفتح</p>
+          style={{
+            background: 'var(--surface)',
+            border:     '1px solid var(--border)',
+            boxShadow:  'var(--shadow-sm)',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = 'var(--accent)'
+            e.currentTarget.style.boxShadow   = 'var(--shadow-md)'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = 'var(--border)'
+            e.currentTarget.style.boxShadow   = 'var(--shadow-sm)'
+          }}
+        >
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
+            stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
+            <line x1="9" y1="3" x2="9" y2="18" />
+            <line x1="15" y1="6" x2="15" y2="21" />
+          </svg>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>خريطة حرارية تفاعلية — اضغط للفتح</p>
         </div>
       </section>
     </div>

@@ -15,44 +15,68 @@ export default function Header() {
   ]
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center px-6 gap-6"
-      style={{ background: 'rgba(11,18,32,.94)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)' }}>
-
-      <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-        <img src="/logo.svg" alt="لن يُنسَوا" className="h-10 w-10 object-contain" />
+    <header
+      className="fixed top-0 left-0 right-0 z-50 flex items-center px-6 gap-6"
+      style={{
+        height: 'var(--header-h)',
+        background: 'var(--glass-bg)',
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        borderBottom: '1px solid var(--border)',
+        boxShadow: 'var(--shadow-sm)',
+      }}
+    >
+      {/* Logo */}
+      <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
+        <img src="/logo.svg" alt="لن يُنسَوا" className="h-9 w-9 object-contain" />
         <div>
-          <div className="text-sm font-bold" style={{ color: 'var(--gold)' }}>لن يُنسَوا</div>
-          <div className="text-xs" style={{ color: 'var(--muted)' }}>They Will Not Be Forgotten</div>
+          <div className="text-sm font-bold leading-tight" style={{ color: 'var(--ink-800)' }}>لن يُنسَوا</div>
+          <div className="text-xs leading-tight" style={{ color: 'var(--text-muted)' }}>They Will Not Be Forgotten</div>
         </div>
       </Link>
 
+      {/* Nav */}
       <nav className="flex gap-1 flex-1">
-        {navItems.map(({ to, label }) => (
-          <Link key={to} to={to}
-            className="px-3 py-1.5 rounded-lg text-sm transition-all"
-            style={{
-              color:      location.pathname === to ? 'var(--gold)' : 'var(--muted)',
-              background: location.pathname === to ? 'rgba(143,168,80,.12)' : 'transparent',
-              border:     location.pathname === to ? '1px solid rgba(143,168,80,.3)' : '1px solid transparent',
-            }}>
-            {label}
-          </Link>
-        ))}
+        {navItems.map(({ to, label }) => {
+          const active = location.pathname === to
+          return (
+            <Link
+              key={to}
+              to={to}
+              className="px-3 py-1.5 rounded-lg text-sm transition-all"
+              style={{
+                color:      active ? 'var(--accent-text)' : 'var(--text-muted)',
+                background: active ? 'var(--accent-soft)' : 'transparent',
+                border:     active ? '1px solid var(--accent-line)' : '1px solid transparent',
+                fontWeight: active ? 600 : 400,
+              }}
+            >
+              {label}
+            </Link>
+          )
+        })}
       </nav>
 
+      {/* Lang toggle */}
       <div className="flex gap-1">
-        {LANGS.map((lang) => (
-          <button key={lang}
-            onClick={() => i18n.changeLanguage(lang)}
-            className="px-2 py-1 rounded text-xs transition-all uppercase"
-            style={{
-              background:   i18n.language === lang ? 'rgba(143,168,80,.15)' : 'var(--surface)',
-              border:       `1px solid ${i18n.language === lang ? 'var(--gold)' : 'var(--border)'}`,
-              color:        i18n.language === lang ? 'var(--gold)' : 'var(--muted)',
-            }}>
-            {lang}
-          </button>
-        ))}
+        {LANGS.map((lang) => {
+          const active = i18n.language === lang
+          return (
+            <button
+              key={lang}
+              onClick={() => i18n.changeLanguage(lang)}
+              className="px-2 py-1 rounded text-xs transition-all uppercase"
+              style={{
+                background: active ? 'var(--accent-soft)'      : 'var(--surface)',
+                border:     active ? '1px solid var(--accent)' : '1px solid var(--border)',
+                color:      active ? 'var(--accent-text)'      : 'var(--text-muted)',
+                fontWeight: active ? 700 : 400,
+              }}
+            >
+              {lang}
+            </button>
+          )
+        })}
       </div>
     </header>
   )
