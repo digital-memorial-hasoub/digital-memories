@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background circle: deep navy -->
+  <circle cx="50" cy="50" r="50" fill="#0b1220"/>
+
+  <!-- Olive branch leaves (left) -->
+  <ellipse cx="28" cy="52" rx="10" ry="5" fill="#8fa850" transform="rotate(-40 28 52)"/>
+  <ellipse cx="22" cy="62" rx="9" ry="4.5" fill="#8fa850" transform="rotate(-55 22 62)"/>
+  <ellipse cx="20" cy="44" rx="8" ry="4" fill="#8fa850" transform="rotate(-25 20 44)"/>
+
+  <!-- Olive branch leaves (right) -->
+  <ellipse cx="72" cy="52" rx="10" ry="5" fill="#8fa850" transform="rotate(40 72 52)"/>
+  <ellipse cx="78" cy="62" rx="9" ry="4.5" fill="#8fa850" transform="rotate(55 78 62)"/>
+  <ellipse cx="80" cy="44" rx="8" ry="4" fill="#8fa850" transform="rotate(25 80 44)"/>
+
+  <!-- Center branch stem -->
+  <line x1="50" y1="72" x2="50" y2="30" stroke="#8fa850" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="50" y1="58" x2="30" y2="50" stroke="#8fa850" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="58" x2="70" y2="50" stroke="#8fa850" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="48" x2="34" y2="42" stroke="#8fa850" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="48" x2="66" y2="42" stroke="#8fa850" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Stylized open book at center -->
+  <path d="M38 45 Q50 40 62 45 Q62 62 50 66 Q38 62 38 45Z" fill="none" stroke="#e4dfcf" stroke-width="1.8"/>
+  <line x1="50" y1="40" x2="50" y2="66" stroke="#e4dfcf" stroke-width="1.5"/>
+
+  <!-- Abstract face / memory silhouette (subtle circle at top) -->
+  <circle cx="50" cy="32" r="6" fill="none" stroke="#e4dfcf" stroke-width="1.8"/>
+</svg>

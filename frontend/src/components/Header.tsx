@@ -19,7 +19,7 @@ export default function Header() {
       style={{ background: 'rgba(11,18,32,.94)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)' }}>
 
       <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-        <img src="/logo.png" alt="لن يُنسَوا" className="h-10 w-10 object-contain" />
+        <img src="/logo.svg" alt="لن يُنسَوا" className="h-10 w-10 object-contain" />
         <div>
           <div className="text-sm font-bold" style={{ color: 'var(--gold)' }}>لن يُنسَوا</div>
           <div className="text-xs" style={{ color: 'var(--muted)' }}>They Will Not Be Forgotten</div>
