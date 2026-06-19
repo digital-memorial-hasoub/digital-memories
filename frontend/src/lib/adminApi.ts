@@ -22,9 +22,9 @@ export const adminApi = {
   victims: {
     list:   (token: string, params?: Record<string, string>) => {
       const qs = params ? '?' + new URLSearchParams(params) : ''
-      return req(`/victims${qs}`, token)
+      return req(`/admin/victims${qs}`, token)
     },
-    get:    (token: string, id: string)   => req(`/victims/${id}`, token),
+    get:    (token: string, id: string)   => req(`/admin/victims/${id}`, token),
     create: (token: string, body: unknown) => req('/admin/victims', token, { method: 'POST', body: JSON.stringify(body) }),
     update: (token: string, id: string, body: unknown) => req(`/admin/victims/${id}`, token, { method: 'PUT', body: JSON.stringify(body) }),
     archive:(token: string, id: string)   => req(`/admin/victims/${id}`, token, { method: 'DELETE' }),

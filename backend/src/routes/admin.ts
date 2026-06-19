@@ -62,6 +62,18 @@ router.get('/victims', async (req, res) => {
   }
 })
 
+// GET /api/admin/victims/:id  (no status filter — admin can see drafts)
+router.get('/victims/:id', async (req, res) => {
+  try {
+    const victim = await prisma.victim.findUnique({ where: { id: req.params.id } })
+    if (!victim) return res.status(404).json({ error: 'Victim not found' })
+    res.json(victim)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+})
+
 // POST /api/admin/victims
 router.post('/victims', async (req, res) => {
   try {
