@@ -90,13 +90,15 @@ export default function AdminVictimForm() {
     if (!token) return
     setError(''); setSaving(true)
     try {
+      // <input type="date"> gives "YYYY-MM-DD" — convert to full ISO so Prisma accepts it
+      const toISO = (d: string) => d ? new Date(d).toISOString() : undefined
       const payload = {
         ...form,
         age: parseInt(form.age),
         lat: parseFloat(form.lat),
         lng: parseFloat(form.lng),
-        date_of_birth: form.date_of_birth || undefined,
-        date_of_death: form.date_of_death,
+        date_of_birth: toISO(form.date_of_birth),
+        date_of_death: toISO(form.date_of_death)!,
       }
       if (isEdit) await adminApi.victims.update(token, id!, payload)
       else        await adminApi.victims.create(token, payload)
