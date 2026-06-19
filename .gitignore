@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# macOS
+.DS_Store
+
+# Test coverage
+coverage/
+
+# Prisma local database
+prisma/dev.db
+backend/prisma/dev.db

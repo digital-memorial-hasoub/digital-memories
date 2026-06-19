@@ -1,0 +1,66 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ViolenceType {
+  homicide
+  domestic
+  shooting
+  other
+}
+
+enum VictimStatus {
+  draft
+  published
+  archived
+}
+
+model Victim {
+  id             String       @id @default(uuid())
+  name_ar        String
+  name_he        String?
+  name_en        String?
+  age            Int
+  profession     String?
+  city           String
+  lat            Float
+  lng            Float
+  date_of_birth  DateTime?
+  date_of_death  DateTime
+  violence_type  ViolenceType
+  bio_ar         String?      @db.Text
+  bio_he         String?      @db.Text
+  bio_en         String?      @db.Text
+  photo_url      String?
+  video_url      String?
+  status         VictimStatus @default(draft)
+  testimonials   Testimonial[]
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @updatedAt
+
+  @@index([city])
+  @@index([status])
+  @@index([violence_type])
+  @@index([date_of_death])
+}
+
+model Testimonial {
+  id          String   @id @default(uuid())
+  victim_id   String
+  victim      Victim   @relation(fields: [victim_id], references: [id], onDelete: Cascade)
+  author_name String
+  relation    String?
+  content_ar  String   @db.Text
+  content_he  String?  @db.Text
+  verified    Boolean  @default(false)
+  created_at  DateTime @default(now())
+
+  @@index([victim_id])
+}
+
