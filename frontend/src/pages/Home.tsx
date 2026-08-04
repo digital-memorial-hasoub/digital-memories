@@ -66,8 +66,8 @@ export default function Home() {
             position: 'absolute', top: '50%', left: '50%',
             transform: 'translate(-50%,-52%)',
             width: 'min(620px,90%)',
-            opacity: 0.10,
-            mixBlendMode: 'multiply',
+            opacity: 0.08,
+            mixBlendMode: 'screen',
             pointerEvents: 'none',
             userSelect: 'none',
           }}
