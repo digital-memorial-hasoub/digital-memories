@@ -1,19 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import VictimCard from '../components/VictimCard'
 import { useVictims } from '../hooks/useVictims'
-
-const CITIES = [
-  'أم الفحم','الناصرة','باقة الغربية','شفاعمرو','رهط','طمرة',
-  'كفر قاسم','عكا','الطيبة','كفر كنا','تل شيفع','المغار','جلجولية',
-]
+import { api } from '../lib/api'
 
 export default function SearchPage() {
   const { t } = useTranslation()
-  const [q,    setQ]    = useState('')
-  const [city, setCity] = useState('all')
-  const [year, setYear] = useState('all')
-  const [type, setType] = useState('all')
+  const [q,      setQ]      = useState('')
+  const [city,   setCity]   = useState('all')
+  const [year,   setYear]   = useState('all')
+  const [type,   setType]   = useState('all')
+  const [cities, setCities] = useState<string[]>([])
+
+  useEffect(() => {
+    api.stats.cities()
+      .then((data: unknown) => {
+        const list = data as { city: string }[]
+        setCities(list.map(c => c.city).filter(Boolean).sort())
+      })
+      .catch(() => {})
+  }, [])
 
   const params: Record<string, string> = {}
   if (q)              params.search = q
@@ -72,7 +78,7 @@ export default function SearchPage() {
         />
         <select value={city} onChange={e => setCity(e.target.value)} style={selectStyle}>
           <option value="all">{t('search.allCities')}</option>
-          {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
+          {cities.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
         <select value={year} onChange={e => setYear(e.target.value)} style={selectStyle}>
           <option value="all">{t('search.allYears')}</option>

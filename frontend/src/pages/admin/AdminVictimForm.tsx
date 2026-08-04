@@ -80,8 +80,9 @@ export default function AdminVictimForm() {
   const [saving,    setSaving]    = useState(false)
   const [error,     setError]     = useState('')
   const [success,   setSuccess]   = useState('')
-  const [uploading, setUploading] = useState(false)
-  const [tab,       setTab]       = useState<'ar' | 'he' | 'en'>('ar')
+  const [uploading,   setUploading]   = useState(false)
+  const [tab,         setTab]         = useState<'ar' | 'he' | 'en'>('ar')
+  const [customCity,  setCustomCity]  = useState(false)
 
   useEffect(() => {
     if (!isEdit || !token) return
@@ -98,6 +99,8 @@ export default function AdminVictimForm() {
         photo_url: vic.photo_url ?? '', video_url: vic.video_url ?? '',
         status: vic.status ?? 'draft',
       })
+      // If the saved city isn't in the known list, switch to free-text mode
+      if (vic.city && !ARAB_CITIES.includes(vic.city)) setCustomCity(true)
     }).catch(console.error)
   }, [isEdit, id, token])
 
@@ -188,10 +191,56 @@ export default function AdminVictimForm() {
         {/* ── Location & Dates ─────────────────────────────────────────────── */}
         <Section title="📍 الموقع والتواريخ">
           <Field label="المدينة / البلدة *">
-            <select value={form.city} onChange={set('city')} required style={inp}>
-              <option value="">اختر المدينة</option>
-              {ARAB_CITIES.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
+            {!customCity ? (
+              <select
+                value={form.city}
+                onChange={e => {
+                  if (e.target.value === '__custom__') {
+                    setCustomCity(true)
+                    setForm(prev => ({ ...prev, city: '', lat: '', lng: '' }))
+                  } else {
+                    set('city')(e)
+                  }
+                }}
+                required
+                style={inp}
+              >
+                <option value="">اختر المدينة</option>
+                {ARAB_CITIES.map(c => <option key={c} value={c}>{c}</option>)}
+                <option value="__custom__">➕ أضف مدينة جديدة...</option>
+              </select>
+            ) : (
+              <div style={{ display: 'flex', gap: '.5rem', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  value={form.city}
+                  onChange={set('city')}
+                  placeholder="اسم المدينة أو البلدة"
+                  required
+                  style={{ ...inp, flex: 1 }}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCustomCity(false)
+                    setForm(prev => ({ ...prev, city: '', lat: '', lng: '' }))
+                  }}
+                  style={{
+                    padding: '.5rem .75rem', borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border)', background: 'var(--bg)',
+                    color: 'var(--text-muted)', cursor: 'pointer', fontSize: '.8rem',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  ← القائمة
+                </button>
+              </div>
+            )}
+            {customCity && (
+              <p style={{ fontSize: '.72rem', color: 'var(--text-faint)', marginTop: '.3rem' }}>
+                أدخل الإحداثيات يدوياً أدناه حتى تظهر على الخريطة
+              </p>
+            )}
           </Field>
           <div style={grid2}>
             <Field label="خط العرض (lat)">
