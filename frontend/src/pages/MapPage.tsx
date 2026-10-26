@@ -29,10 +29,11 @@ export default function MapPage() {
 
     mapInstance.current = L.map(mapRef.current, { center: [32.1, 35.0], zoom: 8 })
 
-    // Light tile layer (Stamen Toner Lite feel — using CartoDB Positron for clean cream look)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '© OpenStreetMap © CARTO',
-      subdomains:  'abcd',
+    // OpenStreetMap tiles — free, no API key required
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains:  'abc',
+      maxZoom:     19,
     }).addTo(mapInstance.current)
 
     Promise.all([api.victims.map(), api.stats.cities()])
